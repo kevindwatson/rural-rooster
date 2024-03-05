@@ -3,6 +3,7 @@
 # Part 1 getting started
 
 import turtle
+import winsound
 
 wn = turtle.Screen()
 wn.title("Pong by @Su_do_nym")
@@ -54,24 +55,28 @@ pen.write("Player A: 0 Player B: 0", align="center", font=("Courier", 24, "norma
 
 # Functions
 def paddle_a_up():
-    y = paddle_a.ycor()
-    y += 20
-    paddle_a.sety(y)
+    if paddle_a.ycor() < 240:
+        y = paddle_a.ycor()
+        y += 20
+        paddle_a.sety(y)
 
 def paddle_a_down():
-    y = paddle_a.ycor()
-    y -= 20
-    paddle_a.sety(y)
+    if paddle_a.ycor() > -240:
+        y = paddle_a.ycor()
+        y -= 20
+        paddle_a.sety(y)
 
 def paddle_b_up():
-    y = paddle_b.ycor()
-    y += 20
-    paddle_b.sety(y)
+    if paddle_b.ycor() < 240:
+        y = paddle_b.ycor()
+        y += 20
+        paddle_b.sety(y)
 
 def paddle_b_down():
-    y = paddle_b.ycor()
-    y -= 20
-    paddle_b.sety(y)
+    if paddle_b.ycor() > -240:
+        y = paddle_b.ycor()
+        y -= 20
+        paddle_b.sety(y)
 
 # Keyboard Binding
 wn.listen()
@@ -93,10 +98,12 @@ while True:
     if ball.ycor() > 290:
         ball.sety(290)
         ball.dy *= -1
+        winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
 
     if ball.ycor() < -290:
         ball.sety(-290)
         ball.dy *= -1
+        winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
 
     if ball.xcor() > 390:
         ball.goto(0,0)
@@ -104,6 +111,7 @@ while True:
         score_a += 1
         pen.clear()
         pen.write("Player A: {} Player B: {}".format(score_a, score_b), align="center", font=("Courier", 24, "normal"))
+        winsound.PlaySound("sound.wav", winsound.SND_ASYNC)
 
     if ball.xcor() < -390:
         ball.goto(0,0)
@@ -112,9 +120,13 @@ while True:
         pen.clear()
         pen.write("Player A: {} Player B: {}".format(score_a, score_b), align="center", font=("Courier", 24, "normal"))
 
+
+
     # Paddle and ball collisions
     if (ball.xcor() > 340 and ball.xcor() < 350) and (ball.ycor() < paddle_b.ycor() + 40 and ball.ycor() > paddle_b.ycor() - 40):
         ball.dx *= -1
+        winsound.PlaySound("8-bit-powerup-6768.mp3", winsound.SND_ASYNC)
 
     if (ball.xcor() < -340 and ball.xcor() > -350) and (ball.ycor() < paddle_a.ycor() + 40 and ball.ycor() > paddle_a.ycor() - 40):
         ball.dx *= -1
+        winsound.PlaySound("8-bit-powerup-6768.mp3", winsound.SND_ASYNC)
