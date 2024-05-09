@@ -1,4 +1,4 @@
-# pong by Kevin Watson @Su_do_nym
+# pong by Kevin Watson 
 # written 19/12/23 from https://www.youtube.com/watch?v=XGf2GcyHPhc 4.28
 # Part 1 getting started
 
@@ -6,7 +6,7 @@ import turtle
 import winsound
 
 wn = turtle.Screen()
-wn.title("Pong by @Su_do_nym")
+wn.title("Pong by @KW")
 wn.bgcolor("black")
 wn.setup(width = 800, height = 600)
 wn.tracer(0)
