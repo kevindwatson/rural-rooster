@@ -4,6 +4,7 @@
 
 --https://github.com/microsoft/vscode-mssql/blob/main/CHANGELOG.md
 
+
 SELECT TOP (1000) [Dashboard]
       ,[Period]
       ,[GeoCode]
@@ -12,4 +13,7 @@ SELECT TOP (1000) [Dashboard]
       ,[VariableA]
       ,[VariableB]
       ,[Value]
+  INTO OUTFILE 'C:\Users\Kevin.Watson\Documents\Git\rural-rooster\outputfile.csv'
+  FIELDS TERMINATED BY ','
+  LINES TERMINATED BY '\n'
   FROM [BirthsDeaths].[dbo].[QA_DashExtract]
