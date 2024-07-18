@@ -1,12 +1,23 @@
+--https://code.visualstudio.com/docs/languages/tsql
+--Open the Extensions view from VS Code Side Bar (Ctrl+Shift+X).
+--Type "mssql" in the search bar, click Install, and reload VS Code when prompted.
+
+--https://github.com/microsoft/vscode-mssql/blob/main/CHANGELOG.md
+
+--https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/datasets/deathsregisteredinenglandandwalesseriesdrreferencetables
+
 DECLARE @Period VARCHAR(4) = '2022'
 
 SELECT [Period], [Base], [Variable], [Value]
-
+--  INTO OUTFILE 'C:\Users\Kevin.Watson\Documents\Git\rural-rooster\LakeDeathsData.txt'
+--  FIELDS TERMINATED BY ','
+--  LINES TERMINATED BY '\n'
 FROM (
+--Extract counts by LA, merging Cornwall and Isles of Scilly since they are merged in the published data
 	  SELECT @Period AS [Period], 'LA' AS [Base], CASE WHEN [xONS_LTLA23] IN ('E06000052', 'E06000053') THEN 'E06000052, E06000053' ELSE [xONS_LTLA23] END AS [Variable], COUNT(*) AS [Value]
 	  	FROM [BirthsDeaths].[dbo].[vDeathsALL]
 	  	WHERE [xYear] = @Period
-	  	GROUP BY [xONS_LTLA23]
+	  	GROUP BY CASE WHEN [xONS_LTLA23] IN ('E06000052', 'E06000053') THEN 'E06000052, E06000053' ELSE [xONS_LTLA23] END
 	  
 	  UNION ALL
 	  
@@ -19,10 +30,10 @@ FROM (
 	  UNION ALL
 	  
 	  --[Age_Unit] = 1 means [Age_UnitVal] is in years, [Age_Unit] = 2, 3 or 4 means months, weeks or days
-	  SELECT @Period AS [Period], 'Age' AS [Base], CASE WHEN [Age_Unit] <> 1 THEN '0' ELSE CAST([Age_UnitVal] AS VARCHAR(20)) END AS [Variable], COUNT(*) AS [Value]
+	  SELECT @Period AS [Period], 'Age' AS [Base], CASE WHEN [Age_Unit] <> 1 THEN '0' WHEN [Age_UnitVal] > 90 THEN '90' ELSE CAST([Age_UnitVal] AS VARCHAR(20)) END AS [Variable], COUNT(*) AS [Value]
 	  	FROM [BirthsDeaths].[dbo].[vDeathsALL]
 	  	WHERE [xYear] = @Period
-	  	GROUP BY CASE WHEN [Age_Unit] <> 1 THEN '0' ELSE CAST([Age_UnitVal] AS VARCHAR(20)) END
+	  	GROUP BY CASE WHEN [Age_Unit] <> 1 THEN '0' WHEN [Age_UnitVal] > 90 THEN '90' ELSE CAST([Age_UnitVal] AS VARCHAR(20)) END
 	  
 	  UNION ALL
 	  

@@ -13,7 +13,7 @@ SELECT TOP (1000) [Dashboard]
       ,[VariableA]
       ,[VariableB]
       ,[Value]
-  INTO OUTFILE 'C:\Users\Kevin.Watson\Documents\Git\rural-rooster\outputfile.csv'
-  FIELDS TERMINATED BY ','
-  LINES TERMINATED BY '\n'
+--  INTO OUTFILE 'C:\Users\Kevin.Watson\Documents\Git\rural-rooster\LakeDeathsData.txt'
+--  FIELDS TERMINATED BY ','
+--  LINES TERMINATED BY '\n'
   FROM [BirthsDeaths].[dbo].[QA_DashExtract]
